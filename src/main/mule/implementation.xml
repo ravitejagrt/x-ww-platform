@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="add-items-to-cart-Sub_Flow" doc:id="e3c3ac7a-103e-4931-b84d-f49e6fca85ac" >
+		<http:request method="POST" doc:name="Request - Add to cart" doc:id="369dd32f-7dd3-4cc3-a6e5-f78ca65214e8" config-ref="HTTP_Request_configuration" path="/items"/>
+	</sub-flow>
+	<sub-flow name="update-item-in-cart-Sub_Flow" doc:id="29cdb4fc-dc0a-46d4-a136-e605da7dc015" >
+		<http:request method="PUT" doc:name="Request - Update cart" doc:id="5a3b0daa-503d-41b1-bbe0-5670950353e4" config-ref="HTTP_Request_configuration" path="/items/{itemId}"/>
+	</sub-flow>
+</mule>

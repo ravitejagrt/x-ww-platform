@@ -1,0 +1,14 @@
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  basepath: "/api"
+  
+api:
+  id: "17880265"
+  flowName: "x-ww-platform-main"
+  
+s:
+  shoppingcart:
+    host: "0.0.0.0"
+    port: "8081"
+    basepath: "/api"
