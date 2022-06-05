@@ -5,9 +5,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="add-items-to-cart-Sub_Flow" doc:id="e3c3ac7a-103e-4931-b84d-f49e6fca85ac" >
+		<logger level="INFO" doc:name="Before Request Logger" doc:id="1b52dd37-2b98-417f-96d0-b4297707b507" message="Before Request"/>
 		<http:request method="POST" doc:name="Request - Add to cart" doc:id="369dd32f-7dd3-4cc3-a6e5-f78ca65214e8" config-ref="HTTP_Request_configuration" path="/items"/>
+		<logger level="INFO" doc:name="Exit logger" doc:id="435cd6f3-8e85-40bf-9a4a-63a0fd3bd861" message="Exit logger"/>
 	</sub-flow>
 	<sub-flow name="update-item-in-cart-Sub_Flow" doc:id="29cdb4fc-dc0a-46d4-a136-e605da7dc015" >
-		<http:request method="PUT" doc:name="Request - Update cart" doc:id="5a3b0daa-503d-41b1-bbe0-5670950353e4" config-ref="HTTP_Request_configuration" path="/items/{itemId}"/>
+		<logger level="INFO" doc:name="Before Request Logger" doc:id="ade29d90-8cdf-44d4-bd9a-efff10762b02" message="Before Request"/>
+		<http:request method="PUT" doc:name="Request - Update cart" doc:id="5a3b0daa-503d-41b1-bbe0-5670950353e4" config-ref="HTTP_Request_configuration" path="/items/{itemId}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"itemId" : vars.itemId
+}]]]></http:uri-params>
+		</http:request>
+		<logger level="INFO" doc:name="Exit logger" doc:id="5519c979-20dc-46a8-a676-3d1243007a3f" message="Exit logger"/>
 	</sub-flow>
 </mule>
