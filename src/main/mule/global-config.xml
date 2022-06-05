@@ -42,7 +42,7 @@ output application/json
 			</ee:transform>
 		</on-error-propagate>
 	</error-handler>
-<!-- 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="6d98c367-efad-453b-a8cd-0a36274246f5" flowRef="${api.flowName}" /> -->
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="6d98c367-efad-453b-a8cd-0a36274246f5" flowRef="${api.flowName}" />
 		
 
 </mule>
