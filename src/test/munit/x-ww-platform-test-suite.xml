@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="x-ww-platform-test-suite.xml" />
+	<munit:test name="x-ww-platform-test-suite-put:\items\(itemId):application\json:x-ww-platform-configTest" doc:id="8013c733-070b-45c9-9662-e6f8aa4d8a94" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="put:\items\(itemId):application\json:x-ww-platform-config" />
+			<munit:enable-flow-source value="update-item-in-cart-Sub_Flow" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="ac64a224-05de-4baa-96f3-6371cd77f38f" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="HTTP_Request_configuration" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to put:\items\(itemId):application\json:x-ww-platform-config" doc:id="0187c03d-d7a9-4733-8a76-1ed8631dbc75" name="put:\items\(itemId):application\json:x-ww-platform-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="c667517f-49bc-45c3-8d19-64ceb7549ecf" actual="#[vars.httpStatus]" expected="#[200]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-post:\items:application\json:x-ww-platform-configTest" doc:id="3d79c0ca-76d8-4482-bc07-b4eb946ef3f6" description="Test" ignore="true">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="post:\items:application\json:x-ww-platform-config" />
+			<munit:enable-flow-source value="add-items-to-cart-Sub_Flow" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="4647272a-2094-4cf6-86be-ca56bf0e441f" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="HTTP_Request_configuration" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='{&#10;    "message": "Item added to cart"&#10;}' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\items:application\json:x-ww-platform-config" doc:id="d32eddd7-a802-485f-b339-8c822dd0071d" name="post:\items:application\json:x-ww-platform-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="efcf36fa-6418-48b8-8b72-ec474f3b9844" actual="#[vars.httpStatus]" expected="#[200]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-consoleTest" doc:id="99ba2640-208f-4df9-9b76-5b26668b6ba6" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="bc14265d-6a78-45de-b4cd-06638388aae0" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-console" doc:id="163c3aeb-7e61-46fb-9c06-988393c74833" name="x-ww-platform-console"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="ab8ba20d-bdf3-48cb-b4e4-a38ccb52d6fe" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-consoleTest1" doc:id="192e8634-500a-4239-ad77-eff6c8eb7dbf" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="584e9047-b907-4be0-bb80-f347a59a108c" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-console" doc:id="b9528dd3-fb43-482c-b9b5-0119c000efc6" name="x-ww-platform-console"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="ab9df171-8582-4eeb-a725-67b0d86e8116" actual="#[vars.httpStatus]" expected="#[404]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-mainTest" doc:id="bbd293b3-89cc-4b4c-b060-cbfc57a4f513" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="ff7043f4-8fed-49bb-b35a-3045c4128f89" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-main" doc:id="caff3052-a64b-4846-b559-82375c8963f5" name="x-ww-platform-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="0514be3e-5df4-4357-a6b6-a3beee3b59c7" actual="#[vars.httpStatus]" expected="#[200]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-mainTest1" doc:id="bee3f69b-ed30-472b-9e62-8740fc725c1d" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:BAD_REQUEST" doc:id="cd86a5cf-2c3c-4f13-b355-e26f3cc08577" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-main" doc:id="0f7f42cf-d9ba-4960-9c8c-cc8897e8dbb9" name="x-ww-platform-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="4aa3fe7d-c74a-4dd9-a8ea-3b83325bd0d3" actual="#[vars.httpStatus]" expected="#[400]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-mainTest2" doc:id="7e131d08-1cc0-4114-a48a-0db4b80f8c54" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:METHOD_NOT_ALLOWED" doc:id="45d9fa0f-f6e2-4d92-8a7a-66b5e9efecae" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-main" doc:id="3af9d692-2f3b-494d-a137-35a4c4776c18" name="x-ww-platform-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="03f82962-0ca7-4696-b951-348a4954308d" actual="#[vars.httpStatus]" expected="#[405]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-mainTest3" doc:id="c2b555eb-4119-410b-8c15-bfbbe3536faf" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:NOT_FOUND" doc:id="6654a1cf-1da5-404e-b560-6fa826dcb5ee" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-main" doc:id="9fb9cb72-3895-40a9-a33b-cb705b7382c3" name="x-ww-platform-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="8cebe780-c90c-4981-b218-56efa4e3a17c" actual="#[vars.httpStatus]" expected="#[404]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-mainTest4" doc:id="d23f6f58-956d-4c94-9e51-ac2d6bb37885" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:NOT_ACCEPTABLE" doc:id="3c4e8255-7fa6-4513-8393-a1b0391b7b9b" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-main" doc:id="bd2c63b5-0d99-43ce-8199-ed9e92d2a8f8" name="x-ww-platform-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="1b1e0de4-f458-4400-9501-74662e9f5efc" actual="#[vars.httpStatus]" expected="#[406]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-mainTest5" doc:id="91b4601e-5eb2-43cc-95d5-f1286573d768" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:UNSUPPORTED_MEDIA_TYPE" doc:id="1b8c214a-c5d7-41b9-a589-6ef34c196fe6" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-main" doc:id="8bebf794-86b9-400f-99a9-03238025b391" name="x-ww-platform-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="fb6d410b-e8a4-4383-b31f-7f6fc6b8b17a" actual="#[vars.httpStatus]" expected="#[415]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="x-ww-platform-test-suite-x-ww-platform-mainTest6" doc:id="c33f4608-8825-4f8c-8711-1b374241f9e2" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:NOT_IMPLEMENTED" doc:id="dd298613-9733-4977-ae25-3a5455524afe" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="x-ww-platform-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to x-ww-platform-main" doc:id="a9839407-8f73-4376-93f5-e76d0ebc6952" name="x-ww-platform-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="71b9d816-42a2-4124-a975-f98e270d182c" actual="#[vars.httpStatus]" expected="#[501]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd 
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+	<http:listener-config name="x-ww-platform-httpListenerConfig" basePath="${http.basepath}">
+        <http:listener-connection host="${http.host}" port="${http.port}" />
+    </http:listener-config>
+    <apikit:config name="x-ww-platform-config" api="resource::dd47c1c5-be2d-4fb5-b04c-ef3f7113599a:x-ww-platform:1.0.0:raml:zip:x-ww-platform.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="ad0ef63e-64f3-4f3c-9577-ec393c1d1bb3" basePath="${s.shoppingcart.basepath}" >
+		<http:request-connection host="${s.shoppingcart.host}" port="${s.shoppingcart.port}" />
+		<http:default-headers >
+			<http:default-header key="client_id" value="${secure::s.shoppingcart.clientId}" />
+			<http:default-header key="client_secret" value="${secure::s.shoppingcart.clientSecret}" />
+		</http:default-headers>
+	</http:request-config>
+    <configuration-properties doc:name="Configuration properties" doc:id="e5717d46-313c-4f3b-bd29-b0e22367a0ee" file="properties\config-${mule.env}.yaml" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="c52ebfc4-1db6-4c06-86fe-e483365fd743" file="properties\secure-${mule.env}.yaml" key="${secret.key}" />
+	<error-handler name="global-configError_Handler" doc:id="b31236fa-d720-442e-bf2b-1af1a368d95f" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="301003da-a30a-4f5a-a781-047d61d2cdb3" >
+			<logger level="INFO" doc:name="Logger" doc:id="a369d04a-f27d-4ca0-8caa-46954993c9bd" />
+			<ee:transform doc:name="Transform Message" doc:id="523416c7-29df-4a95-89f9-8935d93dd090" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Error",
+	errorType: error.errorType,
+	description: error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="6d98c367-efad-453b-a8cd-0a36274246f5" flowRef="${api.flowName}" />
+		
+
+</mule>
